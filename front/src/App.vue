@@ -1,5 +1,5 @@
 <template>
-  <h1>Products</h1>
+  <h1>Products Lists</h1>
   <products v-bind:products="productslist" @edit:product="editProduct" @delete:product="deleteProduct" @add:product="addProduct"/>
 </template>
 
@@ -22,10 +22,11 @@ export default {
         const response = await fetch('http://localhost:8081/Products/Add', {
           method: 'POST',
           body: JSON.stringify(product),
-          headers: { "Content-type": "application/json; charset=UTF-8" }
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+          responseType: 'text'
         });
         // eslint-disable-next-line no-unused-vars
-        const data = await response.json()
+        const data = await response.text()
         this.getProducts()
       } catch (error) {
         console.error('Error occured while adding product: ' +error)
@@ -64,6 +65,7 @@ export default {
         const response = await fetch(`http://localhost:8081/Products`)
         await response.json().then(data => {
           this.productslist = data
+          console.log(this.productslist);
         })
       } catch (error) {
         console.error('Error occured while retrieving products: ' +error);
